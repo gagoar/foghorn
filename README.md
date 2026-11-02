@@ -6,6 +6,8 @@
 
 foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range: what changed for a user, the old and new output, who is affected and how to check, and credit for the people who helped. A checker fails notes that skip these facts.
 
+Agents read release notes now too. A person still has to follow a note when an upgrade breaks something, and still wants to remember what went out. GitHub's `--generate-notes` writes one line per pull request. foghorn writes a note that you can follow. It never publishes: you read the draft and you publish it. It belongs to the same story as [greenhorn](https://github.com/gagoar/greenhorn), a way into the pull request.
+
 [Docs](https://gagoar.github.io/foghorn/): a real run, the voice, and the guide.
 
 ## Before and after

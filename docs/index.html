@@ -53,32 +53,26 @@
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
 <nav class="top" aria-label="Main"><a class="brand" href="index.html"><img src="assets/icon.svg" alt="" width="32" height="32">foghorn</a><a class="link" aria-current="page" href="index.html">Home</a><a class="link" href="showcase.html">Showcase</a><a class="link" href="voice.html">Voice</a><a class="link" href="guide.html">Guide</a><a class="link" href="https://github.com/gagoar/foghorn">GitHub</a></nav>
-<header class="hero"><div><p class="eyebrow">Claude Code plugin</p><h1>Release notes worth reading.</h1><p class="lead">foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range. Each note says what changed for a user, shows the old and new output, says who is affected, and says how to check.</p><p class="note-name">A foghorn is a loud signal that tells people what is ahead. The plugin is named for what release notes do.</p><pre><code>/plugin marketplace add gagoar/gago-plugins
+<header class="hero"><div><p class="eyebrow">Claude Code plugin</p><h1>Release notes worth reading.</h1><p class="lead">foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range. Each note says what changed for a user, shows the old and new output, says who is affected, and says how to check.</p><p class="note-name">A foghorn is a loud signal that tells people what is ahead. The plugin is named for what release notes do.</p><p class="angle">Machines read release notes now, as well as people. A person still has to follow a note when an upgrade breaks something. foghorn writes the note so that both can.</p><pre><code>/plugin marketplace add gagoar/gago-plugins
 /plugin install foghorn@gago-plugins</code></pre><div class="actions"><a class="btn primary" href="#install-and-use">More install steps</a><a class="btn secondary" href="showcase.html">See a real run</a></div></div><img class="mark" src="assets/icon.svg" alt="foghorn icon: a red-orange bell buoy on dark blue water" width="168" height="168"></header>
 <hr class="waves" aria-hidden="true">
 <main id="main">
 <section id="before-and-after">
 <h2>Before and after</h2>
-<p>GitHub made the first note for typescript-patterns-enforcer v0.5.11. The second is an entry from the foghorn draft for the next release. They describe two different changes. The pair shows the shape of a note, not a rewrite.</p>
-<h3>GitHub's generated note</h3>
-<pre><code>## What's Changed
-* Keep the new gate rules from tripping the scanner themselves (v0.5.11) by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/26
-
-
-**Full Changelog**: https://github.com/gagoar/typescript-patterns-enforcer/compare/v0.5.10...v0.5.11</code></pre>
-<p>The generated note names a pull request. It does not say what changed for you.</p>
-<h3>A foghorn entry</h3>
-<div class="notes"><ul><li><p><strong>Stop the magic-number check from flagging numbers inside a named constant (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/35">#35</a>)</strong></p>
-<p>Previously the check flagged every number in an arithmetic expression, even when the expression is the initial value of a <code>const</code> that names the result. The check also flagged a number inside an <code>as const</code> table, although the table is the named constant.</p>
-<p>With this release, the check skips a number in the arithmetic of a <code>const</code> initializer and a number inside an <code>as const</code> literal. This is a deliberate difference from typescript-eslint, which exempts only a bare initializer.</p>
-<p>Original code:</p>
-<pre><code>export const MAX_BYTES = 16 * 1024 * 1024;</code></pre>
-<p>Old output:</p>
-<pre><code>ts-patterns: 3 mechanical violation(s) in magic.ts:
-  L1:26  no-magic-numbers  No magic number: 16.  → SKILL.md Core Rule 9 — extract to a named const
-  L1:31  no-magic-numbers  No magic number: 1024.  → SKILL.md Core Rule 9 — extract to a named const
-  L1:38  no-magic-numbers  No magic number: 1024.  → SKILL.md Core Rule 9 — extract to a named const</code></pre>
-<p>New output: none. The hook exits with code 0.</p></li></ul></div>
+<p>GitHub's <code>--generate-notes</code> writes one line for each pull request, taken from its title. These are the lines for three pull requests of the v0.6.0 range of typescript-patterns-enforcer. We rebuilt them from the titles. The format is the one in the v0.5.11 release.</p>
+<h3>What GitHub writes</h3>
+<pre><code>* Check shell-written TypeScript files with an advisory Stop hook by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/33
+* Add six syntactic checks from the audit and relax magic numbers in named constants by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/35
+* Fold the audit findings into the skill and review agent (v0.5.15) by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/32</code></pre>
+<p>The lines name pull requests. They do not say what changed for you.</p>
+<h3>A foghorn entry for the first of them</h3>
+<div class="notes"><ul><li><p><strong>Check TypeScript files written through a shell with an advisory Stop hook (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/33">#33</a>)</strong></p>
+<p>The mechanical checks ran from a <code>PostToolUse</code> hook, and that hook only sees files that the Edit and Write tools wrote. A <code>.ts</code> file written by a shell heredoc or a script never reached the checks.</p>
+<p>With this release, the plugin also registers a <code>Stop</code> hook. When a session ends, it walks the working directory for <code>.ts</code> and <code>.tsx</code> files modified since the session began and runs the same checks on them. It skips <code>node_modules</code>, <code>.git</code>, <code>dist</code>, <code>build</code>, <code>out</code>, <code>coverage</code>, <code>.next</code>, <code>.turbo</code> and <code>.d.ts</code> files. It is advisory: it reports through <code>systemMessage</code> and always exits 0, so it cannot trap a session.</p>
+<p>New output (a <code>.ts</code> file written through a shell, then the session stops):</p>
+<pre><code>ts-patterns: mechanical violations in TypeScript files changed this session (the edit hook does not see files written through a shell):
+src/list.ts:
+  L1:64  no-zero-comparison  `.length` compared with zero: coerce it (`!!x.length`, `!x.length`) (see SKILL.md Core Rule 10).</code></pre></li></ul></div>
 <p>This entry says what the code did and what it does now. It shows the output. <a href="showcase.html">The full run is on the showcase page.</a></p>
 </section>
 <section id="what-a-good-release-note-does">
@@ -92,6 +86,10 @@
 <h2>How it works</h2>
 <p><code>/foghorn:draft v1.2.0..v1.3.0</code> runs these steps:</p>
 <ol><li>It reads git history, merged pull requests and linked issues. It uses read-only commands.</li><li>It drops internal changes, such as docs-site work, CI and version bumps. It tells you how many.</li><li>It sorts each change as breaking, security, feature or fix. It shows you the table, and you can change it.</li><li>It writes each entry in the voice. A change of behavior gets a real before and after, read from the diff or run from the code. It never invents an example.</li><li>It checks the draft with code, and it polishes the prose. A breaking release with no preface fails. So does a behavior change with no old and new output. So does an entry with no link and no credit.</li><li>It prints the draft. You read it and you publish it. foghorn never publishes.</li></ol>
+</section>
+<section id="what-it-touches">
+<h2>What it touches</h2>
+<ul><li>It reads git history and GitHub with read-only commands.</li><li>The one script that starts a process is <code>scripts/gh-read.ts</code>. It allows a fixed list of read-only <code>gh</code> commands. It gives <code>gh</code> only a short list of environment variables, and it never prints the credential.</li><li>foghorn never publishes a release. You read the draft and you publish it.</li><li>MIT license. No account and no telemetry in the scripts.</li></ul>
 </section>
 <section id="install-and-use">
 <h2>Install and use</h2>

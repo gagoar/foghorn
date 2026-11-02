@@ -102,3 +102,6 @@ footer.foot a { color: var(--text); }
 @media (prefers-reduced-motion: reduce) { .gh-fab { transition: none; } .gh-fab:hover { transform: none; } }
 @media print { .gh-fab { display: none; } }
 footer.foot { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
+
+/* the one line under the lead that says why the plugin exists */
+.angle { max-width: 36em; margin: 0 0 1.25rem; color: var(--muted); }
