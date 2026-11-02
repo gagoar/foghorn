@@ -1,0 +1,38 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "foghorn",
+  "owner": {
+    "name": "gagoar",
+    "url": "https://github.com/gagoar"
+  },
+  "allowCrossMarketplaceDependenciesOn": [
+    "gago-plugins"
+  ],
+  "metadata": {
+    "description": "Write release notes in the esbuild voice: technical, honest, and useful to the people a change affects. A configurable voice, a drafting skill and a checker.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "foghorn",
+      "source": "./",
+      "description": "Write release notes in the esbuild voice: technical, honest, and useful to the people a change affects. A configurable voice, a drafting skill and a checker.",
+      "version": "0.1.0",
+      "author": {
+        "name": "gagoar",
+        "url": "https://github.com/gagoar"
+      },
+      "homepage": "https://gagoar.github.io/foghorn/",
+      "license": "MIT",
+      "keywords": [
+        "release-notes",
+        "changelog",
+        "technical-writing",
+        "releases",
+        "esbuild",
+        "semver"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

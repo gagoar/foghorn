@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>foghorn: a real run, release notes drafted for a TypeScript plugin</title>
+<meta name="description" content="A real foghorn draft for typescript-patterns-enforcer v0.6.0, shown next to what GitHub&#x27;s generated notes said for the release before it.">
+<meta name="theme-color" content="#0b2538">
+<meta name="author" content="gagoar">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="canonical" href="https://gagoar.github.io/foghorn/showcase.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="foghorn">
+<meta property="og:title" content="foghorn: a real run, release notes drafted for a TypeScript plugin">
+<meta property="og:description" content="A real foghorn draft for typescript-patterns-enforcer v0.6.0, shown next to what GitHub&#x27;s generated notes said for the release before it.">
+<meta property="og:url" content="https://gagoar.github.io/foghorn/showcase.html">
+<meta property="og:image" content="https://gagoar.github.io/foghorn/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="foghorn: a red-orange bell buoy on dark blue water. Release notes worth reading.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="foghorn: a real run, release notes drafted for a TypeScript plugin">
+<meta name="twitter:description" content="A real foghorn draft for typescript-patterns-enforcer v0.6.0, shown next to what GitHub&#x27;s generated notes said for the release before it.">
+<meta name="twitter:image" content="https://gagoar.github.io/foghorn/assets/og.png">
+<meta name="twitter:image:alt" content="foghorn: a red-orange bell buoy on dark blue water. Release notes worth reading.">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "foghorn",
+      "item": "https://gagoar.github.io/foghorn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Showcase",
+      "item": "https://gagoar.github.io/foghorn/showcase.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="top" aria-label="Main"><a class="brand" href="index.html"><img src="assets/icon.svg" alt="" width="32" height="32">foghorn</a><a class="link" href="index.html">Home</a><a class="link" aria-current="page" href="showcase.html">Showcase</a><a class="link" href="voice.html">Voice</a><a class="link" href="guide.html">Guide</a><a class="link" href="https://github.com/gagoar/foghorn">GitHub</a></nav>
+<header class="hero"><div><p class="eyebrow">A real run</p><h1>A real run</h1><p class="lead">This was a test run. We ran <code>/foghorn:draft</code> on gagoar/typescript-patterns-enforcer for the range v0.5.11..v0.6.0. This page shows the draft. It does not show what the project published.</p></div><img class="mark" src="assets/icon.svg" alt="foghorn icon: a red-orange bell buoy on dark blue water" width="168" height="168"></header>
+<main id="main">
+<section id="what-github-s-generator-said-for-the-previous-release">
+<h2>What GitHub's generator said for the previous release</h2>
+<p>This is the body of the v0.5.11 release, made by <code>--generate-notes</code>.</p>
+<p>It is one line. It names a pull request. It does not say what changed for a user.</p>
+<pre><code>## What's Changed
+* Keep the new gate rules from tripping the scanner themselves (v0.5.11) by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/26
+
+
+**Full Changelog**: https://github.com/gagoar/typescript-patterns-enforcer/compare/v0.5.10...v0.5.11</code></pre><p class="src">Source: the v0.5.11 release of <a href="https://github.com/gagoar/typescript-patterns-enforcer/releases/tag/v0.5.11">gagoar/typescript-patterns-enforcer</a>.</p>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="the-foghorn-draft-for-v0-6-0">
+<h2>The foghorn draft for v0.6.0</h2>
+<p>This is the text of the final draft file. We did not change a word of it. The voice is <code>esbuild-plus</code>.</p>
+<div class="notes"><ul><li><p><strong>Check TypeScript files written through a shell with an advisory Stop hook (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/33">#33</a>)</strong></p>
+<p>The mechanical checks ran from a <code>PostToolUse</code> hook, and that hook only sees files that the Edit and Write tools wrote. A <code>.ts</code> file written by a shell heredoc or a script never reached the checks.</p>
+<p>With this release, the plugin also registers a <code>Stop</code> hook. When a session ends, it walks the working directory for <code>.ts</code> and <code>.tsx</code> files modified since the session began and runs the same checks on them. It skips <code>node_modules</code>, <code>.git</code>, <code>dist</code>, <code>build</code>, <code>out</code>, <code>coverage</code>, <code>.next</code>, <code>.turbo</code> and <code>.d.ts</code> files. It is advisory: it reports through <code>systemMessage</code> and always exits 0, so it cannot trap a session.</p>
+<p>New output (a <code>.ts</code> file written through a shell, then the session stops):</p>
+<pre><code>ts-patterns: mechanical violations in TypeScript files changed this session (the edit hook does not see files written through a shell):
+src/list.ts:
+  L1:64  no-zero-comparison  `.length` compared with zero: coerce it (`!!x.length`, `!x.length`) (see SKILL.md Core Rule 10).</code></pre></li>
+<li><p><strong>Add six syntactic checks: zero-length comparison, repeated literal, colon-annotated lookup table, fail-open default, <code>String()</code> of an optional chain and void-returning guard (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/35">#35</a>)</strong></p>
+<p>The hook now flags six more patterns from the audit of the rules. Each check is syntactic only, because the engine has no type information, so each one matches a narrow shape:</p>
+<ul><li><code>no-zero-comparison</code> flags <code>.length</code> compared with zero (<code>&gt; 0</code>, <code>=== 0</code>, <code>&gt;= 1</code>, <code>&lt; 1</code> and the loose forms). It matches <code>.length</code> only.</li><li><code>repeated-literal</code> flags the same string or template, at least 8 characters long, written 3 or more times in one file.</li><li><code>colon-annotated-lookup</code> flags <code>const x: Record&lt;K, V&gt; = { ... }</code>. Use <code>{ ... } as const satisfies Record&lt;K, V&gt;</code> so that <code>keyof typeof x</code> keeps the literal keys. The check ignores an empty <code>{}</code>.</li><li><code>fail-open-default</code> flags <code>call() ?? ""</code> and <code>call() ?? 0</code>. The check ignores a property default such as <code>error.status ?? 0</code>, an arithmetic operand and a template placeholder.</li><li><code>string-of-optional-chain</code> flags <code>String(a?.b)</code>, because <code>String(undefined)</code> is <code>"undefined"</code>.</li><li><code>void-guard</code> flags a function named <code>guard</code> or <code>assert*</code> that returns <code>void</code>. Declare <code>asserts condition</code> so that the narrowing reaches the caller.</li></ul>
+<p>Original code:</p>
+<pre><code>export function guard(condition: boolean, message: string): void {
+  if (!condition) throw new Error(message);
+}</code></pre>
+<p>Old output: none. The hook exited with code 0.</p>
+<p>New output:</p>
+<pre><code>ts-patterns: 1 mechanical violation(s) in guard.ts:
+  L1:8  void-guard  `guard` returns void: declare `asserts condition` so the narrowing reaches the caller (see SKILL.md Core Rule 1).  → SKILL.md Core Rule 1 — declare `asserts condition`</code></pre>
+<p>The other five checks follow the same pattern.</p>
+<p>Affects: anyone who runs the plugin on an existing TypeScript codebase. The <code>PostToolUse</code> hook exits with code 2 when it finds a violation. An edit to a file that already contains one of these patterns now goes back to Claude for a fix.</p>
+<p>To check: pipe a hook payload to the engine, as in <code>echo '{"tool_input":{"file_path":"src/a.ts"}}' | node "${CLAUDE_PLUGIN_ROOT}/engine/dist/check.js"</code>.</p></li>
+<li><p><strong>Stop the magic-number check from flagging numbers inside a named constant (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/35">#35</a>)</strong></p>
+<p>Previously the check flagged every number in an arithmetic expression, even when the expression is the initial value of a <code>const</code> that names the result. The check also flagged a number inside an <code>as const</code> table, although the table is the named constant.</p>
+<p>With this release, the check skips a number in the arithmetic of a <code>const</code> initializer and a number inside an <code>as const</code> literal. This is a deliberate difference from typescript-eslint, which exempts only a bare initializer.</p>
+<p>Original code:</p>
+<pre><code>export const MAX_BYTES = 16 * 1024 * 1024;</code></pre>
+<p>Old output:</p>
+<pre><code>ts-patterns: 3 mechanical violation(s) in magic.ts:
+  L1:26  no-magic-numbers  No magic number: 16.  → SKILL.md Core Rule 9 — extract to a named const
+  L1:31  no-magic-numbers  No magic number: 1024.  → SKILL.md Core Rule 9 — extract to a named const
+  L1:38  no-magic-numbers  No magic number: 1024.  → SKILL.md Core Rule 9 — extract to a named const</code></pre>
+<p>New output: none. The hook exits with code 0.</p></li>
+<li><p><strong>Fold the audit findings into the check skill and the review agent (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/32">#32</a>)</strong></p>
+<p>The <code>check</code> skill and the <code>review</code> agent gain the rules that the audit found. No mechanical check covers them. They are: hand-written library shapes, illegal states, fail-open defaults, cast laundering, repeated literals, string boundaries and small items. The review agent has new checklist items 18 to 24.</p>
+<p>Each finding now carries the label <code>correctness</code> or <code>style</code>. A change is done when no <code>correctness</code> finding remains. The skill's review checklist now asks you to print each item marked <code>checked</code> or <code>n/a</code>. It also covers files written through a shell.</p></li></ul></div>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="what-foghorn-left-out">
+<h2>What foghorn left out</h2>
+<p>The range held more changes than the draft shows. foghorn dropped these as internal:</p>
+<ul><li>the docs redesign</li><li>the icon</li><li>the badge</li><li>the CI gates</li><li>the version bump</li></ul>
+<p>The rule is fixed. A change that only touches the documentation site, the README, badges, artwork, a CI gate, a consistency gate or the version number is internal. foghorn counts the dropped entries and tells you. You can correct a classification before it writes.</p>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="what-to-look-for">
+<h2>What to look for</h2>
+<p>Each entry names the thing and the change, and links its pull request. Each entry that changed behavior shows what the user sees. The second entry carries an <code>Affects:</code> line and a <code>To check:</code> line, because the change can break someone.</p>
+<p>A person still has to read it. The checker looks for an example. It cannot prove that the example is true.</p>
+</section>
+</main>
+<footer class="foot"><p>MIT &middot; v0.1.0 &middot; by <a href="https://github.com/gagoar">gagoar</a></p>
+<p>Icon: "Buoy" by James Keuning, from <a href="https://thenounproject.com/icon/buoy-7876/">Noun Project</a>. The icon is marked Public Domain. We credit it anyway. We recolored it and placed it on a new background. <a href="https://github.com/gagoar/foghorn/blob/main/CREDITS.md">Credits</a></p>
+<p>The voice follows the release notes of <a href="https://github.com/evanw/esbuild/releases">esbuild</a> by Evan Wallace. foghorn is not affiliated with esbuild and esbuild has not endorsed it.</p>
+<p><a href="https://github.com/gagoar/foghorn">GitHub</a> &middot; <a href="https://github.com/gagoar/foghorn/issues">Issues</a> &middot; <a href="https://github.com/gagoar/foghorn/blob/main/README.md">README</a></p></footer>
+</div>
+</body>
+</html>

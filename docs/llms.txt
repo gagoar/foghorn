@@ -1,0 +1,29 @@
+# foghorn
+
+> A Claude Code plugin that drafts technical release notes for a tag range in the voice of esbuild's releases. A TypeScript checker fails notes that skip the facts a reader needs. The default voice is esbuild-plus. The checker runs without Claude on Node 22.18 or later.
+
+foghorn has three skills: draft, check and voice. A person reviews every draft. foghorn never publishes.
+
+## Docs
+
+- [Home](https://gagoar.github.io/foghorn/): what it is, install, how it differs from --generate-notes
+- [Showcase](https://gagoar.github.io/foghorn/showcase.html): a real run for typescript-patterns-enforcer v0.6.0
+- [Voice](https://gagoar.github.io/foghorn/voice.html): the ten patterns, the three presets, calibration numbers
+- [Guide](https://gagoar.github.io/foghorn/guide.html): commands, checks, config, dependencies, read-only guarantees, privacy, FAQ
+
+## For agents working with foghorn
+
+- [README](https://raw.githubusercontent.com/gagoar/foghorn/main/README.md)
+- [draft SKILL.md](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/draft/SKILL.md): the workflow of /foghorn:draft
+- [check SKILL.md](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/check/SKILL.md): the workflow of /foghorn:check
+- [voice SKILL.md](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/voice/SKILL.md): the workflow of /foghorn:voice
+- [The ten patterns](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/voice/references/patterns.md)
+- [AGENTS.md](https://raw.githubusercontent.com/gagoar/foghorn/main/AGENTS.md)
+
+## Schema and presets
+
+- [Voice schema](https://raw.githubusercontent.com/gagoar/foghorn/main/schema/foghorn-voice.schema.json)
+- [Preset esbuild-plus](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/voice/presets/esbuild-plus.json)
+- [Preset esbuild](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/voice/presets/esbuild.json)
+- [Preset neutral](https://raw.githubusercontent.com/gagoar/foghorn/main/skills/voice/presets/neutral.json)
+- [Voice example](https://raw.githubusercontent.com/gagoar/foghorn/main/foghorn.voice.example.json)

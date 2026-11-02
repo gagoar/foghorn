@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>foghorn: write release notes like esbuild, ten patterns and three voices</title>
+<meta name="description" content="The ten patterns of esbuild&#x27;s release notes, the three foghorn voice presets, and honest numbers from the 30 latest esbuild releases.">
+<meta name="theme-color" content="#0b2538">
+<meta name="author" content="gagoar">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="canonical" href="https://gagoar.github.io/foghorn/voice.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="foghorn">
+<meta property="og:title" content="foghorn: write release notes like esbuild, ten patterns and three voices">
+<meta property="og:description" content="The ten patterns of esbuild&#x27;s release notes, the three foghorn voice presets, and honest numbers from the 30 latest esbuild releases.">
+<meta property="og:url" content="https://gagoar.github.io/foghorn/voice.html">
+<meta property="og:image" content="https://gagoar.github.io/foghorn/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="foghorn: a red-orange bell buoy on dark blue water. Release notes worth reading.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="foghorn: write release notes like esbuild, ten patterns and three voices">
+<meta name="twitter:description" content="The ten patterns of esbuild&#x27;s release notes, the three foghorn voice presets, and honest numbers from the 30 latest esbuild releases.">
+<meta name="twitter:image" content="https://gagoar.github.io/foghorn/assets/og.png">
+<meta name="twitter:image:alt" content="foghorn: a red-orange bell buoy on dark blue water. Release notes worth reading.">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "foghorn",
+      "item": "https://gagoar.github.io/foghorn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Voice",
+      "item": "https://gagoar.github.io/foghorn/voice.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+<nav class="top" aria-label="Main"><a class="brand" href="index.html"><img src="assets/icon.svg" alt="" width="32" height="32">foghorn</a><a class="link" href="index.html">Home</a><a class="link" href="showcase.html">Showcase</a><a class="link" aria-current="page" href="voice.html">Voice</a><a class="link" href="guide.html">Guide</a><a class="link" href="https://github.com/gagoar/foghorn">GitHub</a></nav>
+<header class="hero"><div><p class="eyebrow">The esbuild voice</p><h1>The voice: write release notes like esbuild</h1><p class="lead">foghorn follows the release notes of esbuild. Evan Wallace writes them. This page lists the ten patterns that foghorn encodes, the three presets, and how well the checker agrees with the real releases. esbuild has not endorsed foghorn.</p></div><img class="mark" src="assets/icon.svg" alt="foghorn icon: a red-orange bell buoy on dark blue water" width="168" height="168"></header>
+<main id="main">
+<section id="the-ten-patterns">
+<h2>The ten patterns</h2>
+<h3>1. A preface only for breaking releases</h3>
+<p>A bold line opens a breaking release. Pinning advice follows.</p>
+<blockquote class="quote"><p><strong>This release deliberately contains backwards-incompatible changes.</strong></p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.27.0">esbuild v0.27.0</a></p>
+
+<h3>2. The title names the thing and the change</h3>
+<p>The title carries the issue links. A security entry links the advisory id.</p>
+<blockquote class="quote"><p>Fix regression with <code>--define</code> and <code>import.meta</code> (<a href="https://github.com/evanw/esbuild/issues/4010">#4010</a>, <a href="https://github.com/evanw/esbuild/issues/4012">#4012</a>, <a href="https://github.com/evanw/esbuild/pull/4013">#4013</a>)</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.24.2">esbuild v0.24.2</a></p>
+<blockquote class="quote"><p>Restrict access to esbuild's development server (<a href="https://github.com/evanw/esbuild/security/advisories/GHSA-67mh-4wv8-2f99">GHSA-67mh-4wv8-2f99</a>)</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.25.0">esbuild v0.25.0</a></p>
+
+<h3>3. Background, then old behavior, then the new behavior</h3>
+<p>The entry goes on with "With this release, these keywords will now be parsed correctly."</p>
+<blockquote class="quote"><p>Previously esbuild could incorrectly fail to parse certain keywords as TypeScript tuple labels</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.25.5">esbuild v0.25.5</a></p>
+
+<h3>4. Show, do not describe</h3>
+<p>Labeled blocks show <code>Original code</code>, <code>Old output</code> and <code>New output</code>, with the flags in the label.</p>
+<blockquote class="quote"><p>// Old output (with --bundle --format=esm --platform=node --target=node18,es2022)</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.23.1">esbuild v0.23.1</a></p>
+
+<h3>5. Say the cause and the version of a regression</h3>
+<p>Name the version where the change broke.</p>
+<blockquote class="quote"><p>The regression was introduced in version 0.18.7 of esbuild.</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.23.1">esbuild v0.23.1</a></p>
+
+<h3>6. Name new requirements concretely</h3>
+<p>Use a short list with the version numbers.</p>
+<blockquote class="quote"><p>* macOS: now requires macOS 12 (Monterey) or later</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.27.0">esbuild v0.27.0</a></p>
+
+<h3>7. A migration step, not an apology</h3>
+<p>Give the exact flag that restores the old behavior.</p>
+<blockquote class="quote"><p>If you don't want this behavior, you can do <code>--packages=bundle</code> to allow packages to be included in the bundle</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.22.0">esbuild v0.22.0</a></p>
+
+<h3>8. Credit by handle, in one sentence</h3>
+<p>Two forms: one for a report, one for a fix.</p>
+<blockquote class="quote"><p>This fix was contributed by <a href="https://github.com/sapphi-red">@sapphi-red</a>.</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.24.2">esbuild v0.24.2</a></p>
+<blockquote class="quote"><p>Thanks to <a href="https://github.com/sapphi-red">@sapphi-red</a> for reporting this issue.</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.25.0">esbuild v0.25.0</a></p>
+
+<h3>9. Plain honesty</h3>
+<p>A hedge marks real uncertainty. It is never filler.</p>
+<blockquote class="quote"><p>Hopefully this release is uneventful</p></blockquote>
+<p class="src">Source: <a href="https://github.com/evanw/esbuild/releases/tag/v0.26.0">esbuild v0.26.0</a></p>
+
+<h3>10. Size follows content</h3>
+<p>A release with one change has one entry. Version 0.26.0 is one entry of 678 characters. Version 0.24.2 is one entry of 712 characters. No padding.</p>
+
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="the-gap-esbuild-leaves">
+<h2>The gap esbuild leaves</h2>
+<p>esbuild rarely says who a change affects. When a change can break someone, the default voice adds an optional <code>Affects:</code> line and a <code>To check:</code> line. The strict preset leaves them out.</p>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="three-presets">
+<h2>Three presets</h2>
+<ul><li><code>esbuild-plus</code> is the default. It uses the first person. It has the esbuild shape plus the <code>Affects:</code> and <code>To check:</code> lines.</li><li><code>esbuild</code> follows the esbuild shape, as far as ten hand-cut excerpts go. It uses the first person. It has no <code>Affects:</code> line.</li><li><code>neutral</code> uses the third person. The project is the subject. Credits read "Reported by @x. Fixed by @y."</li></ul>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="what-a-voice-sets">
+<h2>What a voice sets</h2>
+<p>A voice is a JSON file. These are its fields:</p>
+<ul><li><code>person</code>: first or third.</li><li><code>creditStyle</code>: <code>esbuild</code>, <code>thanks</code> or <code>by-line</code>.</li><li><code>creditOwner</code>: false by default. foghorn credits only the people who wrote or reported a change. It leaves out the owner of the repository unless you set this to true.</li><li><code>prefaceRules</code>: the bold line and the pinning advice of a breaking release.</li><li><code>exampleStyle</code>: the three labels of an example.</li><li><code>affectsLine</code>: whether an <code>Affects:</code> line is allowed.</li><li><code>maxEntryChars</code>: 2500 for <code>esbuild-plus</code> and <code>neutral</code>, 3000 for <code>esbuild</code>.</li><li><code>openers</code> and <code>bannedWords</code>: the opening phrases, and 16 marketing words that the checker warns about.</li></ul>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="the-severity-map">
+<h2>The severity map</h2>
+<p>A voice can change the level of any check. The <code>esbuild</code> preset turns one hard check into a warning.</p>
+<pre><code>{
+  "severity": {
+    "entry-no-link-or-credit": "warn"
+  }
+}</code></pre>
+</section>
+<hr class="waves" aria-hidden="true">
+<section id="honest-numbers">
+<h2>Honest numbers</h2>
+<p>We ran the checker on the 30 latest esbuild releases, v0.22.0 to v0.28.2.</p>
+<ul><li>Under the strict <code>esbuild</code> preset, 2 releases break a hard check: v0.28.0 and v0.25.6.</li><li>Under <code>esbuild-plus</code>, 8 releases break a hard check.</li></ul>
+<p>The gap is the link-or-credit check. Some of esbuild's own entries have neither. The strict preset makes that a warning. The default voice keeps it hard, because a reader of a release needs a place to look. That rule is ours. It is not esbuild's.</p>
+<p>Two limits come from esbuild's own maxima in those 30 releases. The most examples in one entry is 4. The longest paragraph is 859 characters, so the checker warns above 900. A warning is advice. A hard check is a rule.</p>
+</section>
+</main>
+<footer class="foot"><p>MIT &middot; v0.1.0 &middot; by <a href="https://github.com/gagoar">gagoar</a></p>
+<p>Icon: "Buoy" by James Keuning, from <a href="https://thenounproject.com/icon/buoy-7876/">Noun Project</a>. The icon is marked Public Domain. We credit it anyway. We recolored it and placed it on a new background. <a href="https://github.com/gagoar/foghorn/blob/main/CREDITS.md">Credits</a></p>
+<p>The voice follows the release notes of <a href="https://github.com/evanw/esbuild/releases">esbuild</a> by Evan Wallace. foghorn is not affiliated with esbuild and esbuild has not endorsed it.</p>
+<p><a href="https://github.com/gagoar/foghorn">GitHub</a> &middot; <a href="https://github.com/gagoar/foghorn/issues">Issues</a> &middot; <a href="https://github.com/gagoar/foghorn/blob/main/README.md">README</a></p></footer>
+</div>
+</body>
+</html>

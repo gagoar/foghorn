@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "foghorn voice",
+  "description": "The voice of a set of release notes. foghorn reads it in the draft skill and the checker.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "person",
+    "creditStyle",
+    "prefaceRules",
+    "exampleStyle",
+    "affectsLine",
+    "maxEntryChars",
+    "openers",
+    "bannedWords"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "person": {
+      "enum": [
+        "first",
+        "third"
+      ],
+      "description": "first: the maintainer says I and we where the source does. third: the project is the subject."
+    },
+    "creditStyle": {
+      "enum": [
+        "esbuild",
+        "thanks",
+        "by-line"
+      ],
+      "description": "esbuild: both 'Thanks to @x for reporting' and 'This fix was contributed by @x'. thanks: only the thanks sentence. by-line: 'Reported by @x. Fixed by @y.'"
+    },
+    "prefaceRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "pinning"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The bold line that opens a breaking release."
+        },
+        "pinning": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The pinning advice. {package} and {previous} are placeholders."
+        }
+      }
+    },
+    "exampleStyle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "labels"
+      ],
+      "properties": {
+        "labels": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "original",
+            "oldOutput",
+            "newOutput"
+          ],
+          "properties": {
+            "original": {
+              "type": "string",
+              "minLength": 3
+            },
+            "oldOutput": {
+              "type": "string",
+              "minLength": 3
+            },
+            "newOutput": {
+              "type": "string",
+              "minLength": 3
+            }
+          }
+        }
+      }
+    },
+    "affectsLine": {
+      "type": "boolean",
+      "description": "Add an optional Affects: line (and a To check: line) when a change can break someone."
+    },
+    "maxEntryChars": {
+      "type": "integer",
+      "minimum": 200,
+      "description": "The checker warns when the prose and the code blocks of an entry together are longer."
+    },
+    "openers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "bannedWords": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "creditOwner": {
+      "type": "boolean",
+      "default": false,
+      "description": "Credit the owner of the repository as well. Off by default: a maintainer who ships alone credits only outside contributors and reporters."
+    },
+    "severity": {
+      "type": "object",
+      "description": "Map a check id to 'hard' or 'warn' for this voice. The esbuild preset softens entry-no-link-or-credit, because esbuild's own notes break it.",
+      "additionalProperties": {
+        "enum": [
+          "hard",
+          "warn"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "foghorn",
+  "displayName": "foghorn",
+  "version": "0.1.0",
+  "icon": "./.claude-plugin/icon.png",
+  "description": "Write release notes in the esbuild voice: technical, honest, and useful to the people a change affects. A configurable voice, a drafting skill and a checker.",
+  "author": {
+    "name": "gagoar",
+    "url": "https://github.com/gagoar"
+  },
+  "homepage": "https://gagoar.github.io/foghorn/",
+  "documentationUrl": "https://gagoar.github.io/foghorn/guide.html",
+  "supportUrl": "https://github.com/gagoar/foghorn/issues",
+  "privacyPolicyUrl": "https://github.com/gagoar/foghorn#privacy",
+  "termsOfServiceUrl": "https://github.com/gagoar/foghorn#terms",
+  "repository": "https://github.com/gagoar/foghorn",
+  "license": "MIT",
+  "keywords": [
+    "release-notes",
+    "changelog",
+    "technical-writing",
+    "releases",
+    "esbuild",
+    "semver"
+  ],
+  "skills": [
+    "./skills/draft",
+    "./skills/check",
+    "./skills/voice"
+  ],
+  "dependencies": [
+    {
+      "name": "unmistakable",
+      "marketplace": "gago-plugins"
+    },
+    {
+      "name": "iceberg",
+      "marketplace": "gago-plugins"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "esbuild",
+  "person": "first",
+  "creditStyle": "esbuild",
+  "prefaceRules": {
+    "text": "**This release deliberately contains backwards-incompatible changes.**",
+    "pinning": "To avoid automatically picking up releases like this, you should either be pinning the exact version of `{package}` in your `package.json` file (recommended) or be using a version range syntax that only accepts patch upgrades such as `^{previous}` or `~{previous}`."
+  },
+  "exampleStyle": {
+    "labels": {
+      "original": "Original code",
+      "oldOutput": "Old output",
+      "newOutput": "New output"
+    }
+  },
+  "affectsLine": false,
+  "maxEntryChars": 3000,
+  "openers": [
+    "Previously {project} ...",
+    "This happened because ...",
+    "With this release, {project} will now ..."
+  ],
+  "bannedWords": [
+    "seamless",
+    "seamlessly",
+    "robust",
+    "blazing",
+    "blazingly",
+    "cutting-edge",
+    "game-changing",
+    "world-class",
+    "revolutionary",
+    "supercharge",
+    "supercharged",
+    "effortless",
+    "effortlessly",
+    "unleash",
+    "delightful",
+    "best-in-class"
+  ],
+  "creditOwner": false,
+  "severity": {
+    "entry-no-link-or-credit": "warn"
+  }
+}

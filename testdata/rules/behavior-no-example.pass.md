@@ -1,0 +1,16 @@
+<!-- test fixture: synthetic text for the checker, not a real release -->
+## v1.2.3 (2025-01-01)
+
+* Fix a crash with `--strict` ([#12](https://example.invalid/acme/tool/issues/12))
+
+    Previously the tool crashed on empty input. Now it exits cleanly:
+
+    ```sh
+    # Old output
+    $ tool --strict < /dev/null
+    panic: empty input
+
+    # New output
+    $ tool --strict < /dev/null
+    (no output, exit code 0)
+    ```
