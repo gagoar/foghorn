@@ -6,8 +6,10 @@ import { CHECK_IDS } from "./notes-checks.ts";
 
 export const PERSONS = ["first", "third"] as const;
 export const CREDIT_STYLES = ["esbuild", "thanks", "by-line"] as const;
-export const PRESETS = ["esbuild", "esbuild-plus", "neutral"] as const;
-export const DEFAULT_PRESET = "esbuild-plus";
+export const PRESETS = ["foghorn", "esbuild", "neutral"] as const;
+export const DEFAULT_PRESET = "foghorn";
+// Preset names that were renamed. The old name still loads. Maps the old name to the new one.
+export const RENAMED_PRESETS: Readonly<Record<string, (typeof PRESETS)[number]>> = { "esbuild-plus": "foghorn" };
 
 export const SEVERITIES = ["hard", "warn"] as const;
 
@@ -95,9 +97,15 @@ function readVoiceFile(path: string): unknown {
   }
 }
 
-// A preset name loads from skills/voice/presets. Anything else is read as a path to a voice file.
+// The new name of a renamed preset. Returns "foghorn" for "esbuild-plus"; returns undefined for any other spec.
+export function renamedTo(spec: string): string | undefined {
+  return Object.hasOwn(RENAMED_PRESETS, spec) ? RENAMED_PRESETS[spec] : undefined;
+}
+
+// A preset name loads from skills/voice/presets. A renamed preset loads under its new name. Anything else is read as a path to a voice file.
 export function loadVoice(spec: string): Voice {
-  const path = (PRESETS as readonly string[]).includes(spec) ? `${PRESET_DIR}${spec}.json` : spec;
+  const preset = renamedTo(spec) ?? spec;
+  const path = (PRESETS as readonly string[]).includes(preset) ? `${PRESET_DIR}${preset}.json` : spec;
   const raw = readVoiceFile(path);
   const problems = validateVoice(raw);
   if (problems.length) throw new VoiceError(`voice ${spec} is not valid: ${problems.join("; ")}`);

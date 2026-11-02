@@ -117,7 +117,7 @@
     },
     "severity": {
       "type": "object",
-      "description": "Map a check id to 'hard' or 'warn' for this voice. The esbuild preset softens entry-no-link-or-credit, because esbuild's own notes break it.",
+      "description": "Map a check id to 'hard' or 'warn' for this voice. The esbuild preset softens entry-no-link-or-credit, because the notes it is calibrated on break it.",
       "additionalProperties": {
         "enum": [
           "hard",

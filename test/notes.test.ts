@@ -12,7 +12,7 @@ const FIXTURE_SUFFIX = /\.(?:pass|fail)\.md$/;
 const BREAKING = "breaking-no-preface";
 const BEHAVIOR = "behavior-no-example";
 const TRACE = "entry-no-link-or-credit";
-const DEFAULT_VOICE = "esbuild-plus";
+const DEFAULT_VOICE = "foghorn";
 const CREDIT = "credit-unverified";
 const BUG = "* Fix a bug\n";
 const OPTIONAL_KEYS = ["creditOwner", "severity"] as const;
@@ -115,6 +115,17 @@ test("a voice preset validates, and the checker obeys it", () => {
   const text = "* Raise the Node requirement ([#1](https://example.invalid/a/b/issues/1))\n\n    The tool now requires Node 14.\n";
   assert.equal(JSON.stringify(cli(["--voice", "esbuild", "--json"], text).out).includes("affects-line-missing"), false);
   assert.equal(JSON.stringify(cli(["--voice", DEFAULT_VOICE, "--json"], text).out).includes("affects-line-missing"), true);
+});
+
+test("the old preset name esbuild-plus still loads, prints one line to stderr, and gives the foghorn voice", () => {
+  const old = cli(["--json", "--voice", "esbuild-plus"], BUG);
+  const current = cli(["--json", "--voice", "foghorn"], BUG);
+  assert.equal(old.code, current.code);
+  assert.equal(old.out, current.out);
+  assert.equal(old.err.split("\n").length, 1);
+  assert.ok(old.err.includes("esbuild-plus") && old.err.includes("renamed to foghorn"), old.err);
+  assert.equal(current.err, "");
+  assert.equal(loadVoice("esbuild-plus").name, "foghorn");
 });
 
 test("the schema and the validator name the same keys", () => {

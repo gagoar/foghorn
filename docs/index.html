@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>foghorn: release notes worth reading, in the esbuild voice</title>
-<meta name="description" content="foghorn is a Claude Code plugin that drafts technical release notes in the esbuild voice. A checker fails notes that skip the facts a reader needs.">
+<title>foghorn: write technical release notes in Claude Code</title>
+<meta name="description" content="foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range. Each note says what changed for a user, shows the old and new output, says who is affected, and says how to check.">
 <meta name="theme-color" content="#0b2538">
 <meta name="author" content="gagoar">
 <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
 <link rel="canonical" href="https://gagoar.github.io/foghorn/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="foghorn">
-<meta property="og:title" content="foghorn: release notes worth reading, in the esbuild voice">
-<meta property="og:description" content="foghorn is a Claude Code plugin that drafts technical release notes in the esbuild voice. A checker fails notes that skip the facts a reader needs.">
+<meta property="og:title" content="foghorn: write technical release notes in Claude Code">
+<meta property="og:description" content="A release notes generator for Claude Code. Technical release notes that say who is affected and how to check.">
 <meta property="og:url" content="https://gagoar.github.io/foghorn/">
 <meta property="og:image" content="https://gagoar.github.io/foghorn/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="foghorn: a red-orange bell buoy on dark blue water. Release notes worth reading.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="foghorn: release notes worth reading, in the esbuild voice">
-<meta name="twitter:description" content="foghorn is a Claude Code plugin that drafts technical release notes in the esbuild voice. A checker fails notes that skip the facts a reader needs.">
+<meta name="twitter:title" content="foghorn: write technical release notes in Claude Code">
+<meta name="twitter:description" content="A release notes generator for Claude Code. Technical release notes that say who is affected and how to check.">
 <meta name="twitter:image" content="https://gagoar.github.io/foghorn/assets/og.png">
 <meta name="twitter:image:alt" content="foghorn: a red-orange bell buoy on dark blue water. Release notes worth reading.">
 <link rel="stylesheet" href="assets/site.css">
@@ -31,7 +31,7 @@
   "name": "foghorn",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows (Claude Code, Node 22.18 or later)",
-  "description": "foghorn is a Claude Code plugin that drafts technical release notes in the esbuild voice. A checker fails notes that skip the facts a reader needs.",
+  "description": "foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range. Each note says what changed for a user, shows the old and new output, says who is affected, and says how to check.",
   "url": "https://gagoar.github.io/foghorn/",
   "softwareVersion": "0.1.0",
   "license": "https://opensource.org/licenses/MIT",
@@ -53,21 +53,22 @@
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
 <nav class="top" aria-label="Main"><a class="brand" href="index.html"><img src="assets/icon.svg" alt="" width="32" height="32">foghorn</a><a class="link" aria-current="page" href="index.html">Home</a><a class="link" href="showcase.html">Showcase</a><a class="link" href="voice.html">Voice</a><a class="link" href="guide.html">Guide</a><a class="link" href="https://github.com/gagoar/foghorn">GitHub</a></nav>
-<header class="hero"><div><p class="eyebrow">Claude Code plugin</p><h1>Release notes worth reading.</h1><p class="lead">foghorn is a Claude Code plugin. It drafts release notes for a tag range. It follows the voice of esbuild's releases: technical, honest, and useful to the people a change affects. A checker fails notes that skip the facts a reader needs.</p><div class="actions"><a class="btn primary" href="#install">Install</a><a class="btn secondary" href="showcase.html">See a real run</a><a class="btn secondary" href="https://github.com/gagoar/foghorn">GitHub</a></div></div><img class="mark" src="assets/icon.svg" alt="foghorn icon: a red-orange bell buoy on dark blue water" width="168" height="168"></header>
-<main id="main">
-<ul class="stats" aria-label="Facts"><li><b>3</b>commands</li><li><b>4</b>hard checks</li><li><b>9</b>warnings</li><li><b>3</b>voices</li><li><b>0</b>npm dependencies</li></ul>
+<header class="hero"><div><p class="eyebrow">Claude Code plugin</p><h1>Release notes worth reading.</h1><p class="lead">foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range. Each note says what changed for a user, shows the old and new output, says who is affected, and says how to check.</p><p class="note-name">A foghorn is a loud signal that tells people what is ahead. The plugin is named for what release notes do.</p><pre><code>/plugin marketplace add gagoar/gago-plugins
+/plugin install foghorn@gago-plugins</code></pre><div class="actions"><a class="btn primary" href="#install-and-use">More install steps</a><a class="btn secondary" href="showcase.html">See a real run</a></div></div><img class="mark" src="assets/icon.svg" alt="foghorn icon: a red-orange bell buoy on dark blue water" width="168" height="168"></header>
 <hr class="waves" aria-hidden="true">
+<main id="main">
 <section id="before-and-after">
 <h2>Before and after</h2>
-<p>Before is what GitHub wrote for the last release of typescript-patterns-enforcer. After is one entry from the foghorn draft for the next release. They are two different changes. The pair shows the shape of a note, not a rewrite.</p>
-
-
-
-<div class="grid2"><div class="card"><span class="tag">Before</span><pre><code>## What's Changed
+<p>GitHub made the first note for typescript-patterns-enforcer v0.5.11. The second is an entry from the foghorn draft for the next release. They describe two different changes. The pair shows the shape of a note, not a rewrite.</p>
+<h3>GitHub's generated note</h3>
+<pre><code>## What's Changed
 * Keep the new gate rules from tripping the scanner themselves (v0.5.11) by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/26
 
 
-**Full Changelog**: https://github.com/gagoar/typescript-patterns-enforcer/compare/v0.5.10...v0.5.11</code></pre><p>GitHub's <code>--generate-notes</code> names a pull request. It does not say what changed for you.</p></div><div class="card"><span class="tag after">After</span><div class="notes"><ul><li><p><strong>Stop the magic-number check from flagging numbers inside a named constant (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/35">#35</a>)</strong></p>
+**Full Changelog**: https://github.com/gagoar/typescript-patterns-enforcer/compare/v0.5.10...v0.5.11</code></pre>
+<p>The generated note names a pull request. It does not say what changed for you.</p>
+<h3>A foghorn entry</h3>
+<div class="notes"><ul><li><p><strong>Stop the magic-number check from flagging numbers inside a named constant (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/35">#35</a>)</strong></p>
 <p>Previously the check flagged every number in an arithmetic expression, even when the expression is the initial value of a <code>const</code> that names the result. The check also flagged a number inside an <code>as const</code> table, although the table is the named constant.</p>
 <p>With this release, the check skips a number in the arithmetic of a <code>const</code> initializer and a number inside an <code>as const</code> literal. This is a deliberate difference from typescript-eslint, which exempts only a bare initializer.</p>
 <p>Original code:</p>
@@ -77,42 +78,38 @@
   L1:26  no-magic-numbers  No magic number: 16.  → SKILL.md Core Rule 9 — extract to a named const
   L1:31  no-magic-numbers  No magic number: 1024.  → SKILL.md Core Rule 9 — extract to a named const
   L1:38  no-magic-numbers  No magic number: 1024.  → SKILL.md Core Rule 9 — extract to a named const</code></pre>
-<p>New output: none. The hook exits with code 0.</p></li></ul></div><p>foghorn says what the code did, what it does now, and shows the output.</p></div></div>
-<p><a href="showcase.html">The full run is on the showcase page.</a></p>
+<p>New output: none. The hook exits with code 0.</p></li></ul></div>
+<p>This entry says what the code did and what it does now. It shows the output. <a href="showcase.html">The full run is on the showcase page.</a></p>
 </section>
-<hr class="waves" aria-hidden="true">
-<section id="three-commands">
-<h2>Three commands</h2>
+<section id="what-a-good-release-note-does">
+<h2>What a good release note does</h2>
+<p>A good release note says what changed for a user. A pull request title says what a developer did. A reader wants the other fact: what is different after I upgrade.</p>
+<p>It shows the old output and the new output. "Improved error handling" sends the reader to the diff. Two blocks of output take five seconds to read. If the author cannot show the output, the note says so.</p>
+<p>It says who is affected and how to check. Most changes touch nobody. A few break someone. For those, one line names the people and one line gives a command that tells them if they are one of them.</p>
+<p>It credits the people who are not the maintainer. The person who reported the bug and the person who fixed it get their handles. And it admits what the author does not know. If a check matches only a narrow shape, the note says so. A hedge that marks a real doubt is content, not filler.</p>
+</section>
+<section id="how-it-works">
+<h2>How it works</h2>
+<p><code>/foghorn:draft v1.2.0..v1.3.0</code> runs these steps:</p>
+<ol><li>It reads git history, merged pull requests and linked issues. It uses read-only commands.</li><li>It drops internal changes, such as docs-site work, CI and version bumps. It tells you how many.</li><li>It sorts each change as breaking, security, feature or fix. It shows you the table, and you can change it.</li><li>It writes each entry in the voice. A change of behavior gets a real before and after, read from the diff or run from the code. It never invents an example.</li><li>It checks the draft with code, and it polishes the prose. A breaking release with no preface fails. So does a behavior change with no old and new output. So does an entry with no link and no credit.</li><li>It prints the draft. You read it and you publish it. foghorn never publishes.</li></ol>
+</section>
+<section id="install-and-use">
+<h2>Install and use</h2>
+<p>foghorn needs two other plugins for the prose step: unmistakable, which holds the <code>asd-ste100</code> skill, and iceberg, which holds <code>iceberg:edit</code>. Both come from the same marketplace.</p>
+<pre><code>/plugin install unmistakable@gago-plugins
+/plugin install iceberg@gago-plugins</code></pre>
 <ul><li><code>/foghorn:draft v1.2.0..v1.3.0</code> collects the changes of the range, drafts the notes, checks them and polishes them.</li><li><code>/foghorn:check RELEASE.md</code> runs the checker on a file and explains each finding. It changes nothing.</li><li><code>/foghorn:voice</code> shows, picks or edits the voice.</li></ul>
 </section>
-<hr class="waves" aria-hidden="true">
-<section id="install">
-<h2>Install</h2>
-<p>Add the marketplace and install the plugin.</p>
-<pre><code>/plugin marketplace add gagoar/foghorn
-/plugin install foghorn@foghorn</code></pre>
-<p>foghorn needs two other plugins for the prose step: unmistakable, which holds the <code>asd-ste100</code> skill, and iceberg, which holds <code>iceberg:edit</code>. Both come from the gago-plugins marketplace.</p>
-<pre><code>/plugin marketplace add gagoar/gago-plugins
-/plugin install unmistakable@gago-plugins
-/plugin install iceberg@gago-plugins</code></pre>
-</section>
-<hr class="waves" aria-hidden="true">
-<section id="how-it-differs-from-generate-notes">
-<h2>How it differs from --generate-notes</h2>
-<p><code>gh release create --generate-notes</code> is instant, free and deterministic. It lists pull request titles and authors. If your pull request titles are good and your readers only need a list, use it.</p>
-<p>foghorn does more and costs more. It reads the diffs and the linked issues. It drops internal noise. It classifies the changes. It asks for a real before and after. It adds a preface to a breaking release. It checks the result with code.</p>
-<p>It needs a model. It takes minutes. A person must read the draft before it ships. A model can still misread a diff.</p>
-</section>
-<hr class="waves" aria-hidden="true">
-<section id="go-further">
-<h2>Go further</h2>
-<ul><li><a href="showcase.html">The showcase</a> shows a real run.</li><li><a href="voice.html">The voice page</a> lists the ten patterns, the three presets and the numbers.</li><li><a href="guide.html">The guide</a> covers the commands, the checks, the config and privacy.</li></ul>
+<section id="limits">
+<h2>Limits</h2>
+<p>foghorn needs a model. It takes minutes. A model can misread a diff, so a person must read every draft. The checker looks for an example. It cannot prove that the example is true. <code>gh release create --generate-notes</code> is instant and free. If your pull request titles are good and your readers need only a list, use it. foghorn is better than generate-notes only when your readers need more than a list.</p>
 </section>
 </main>
 <footer class="foot"><p>MIT &middot; v0.1.0 &middot; by <a href="https://github.com/gagoar">gagoar</a></p>
 <p>Icon: "Buoy" by James Keuning, from <a href="https://thenounproject.com/icon/buoy-7876/">Noun Project</a>. The icon is marked Public Domain. We credit it anyway. We recolored it and placed it on a new background. <a href="https://github.com/gagoar/foghorn/blob/main/CREDITS.md">Credits</a></p>
-<p>The voice follows the release notes of <a href="https://github.com/evanw/esbuild/releases">esbuild</a> by Evan Wallace. foghorn is not affiliated with esbuild and esbuild has not endorsed it.</p>
+<p>Voice inspired by the release notes of <a href="https://github.com/evanw/esbuild/releases">esbuild</a>.</p>
 <p><a href="https://github.com/gagoar/foghorn">GitHub</a> &middot; <a href="https://github.com/gagoar/foghorn/issues">Issues</a> &middot; <a href="https://github.com/gagoar/foghorn/blob/main/README.md">README</a></p></footer>
 </div>
+<a class="gh-fab" href="https://github.com/gagoar/foghorn" aria-label="View foghorn on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
 </body>
 </html>

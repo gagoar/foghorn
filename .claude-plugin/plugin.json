@@ -3,7 +3,7 @@
   "displayName": "foghorn",
   "version": "0.1.0",
   "icon": "./.claude-plugin/icon.png",
-  "description": "Write release notes in the esbuild voice: technical, honest, and useful to the people a change affects. A configurable voice, a drafting skill and a checker.",
+  "description": "Write technical release notes: entries that say what changed for a user, show the old and new output, say who is affected and credit the people who helped. A configurable voice, a drafting skill and a checker.",
   "author": {
     "name": "gagoar",
     "url": "https://github.com/gagoar"
@@ -20,7 +20,6 @@
     "changelog",
     "technical-writing",
     "releases",
-    "esbuild",
     "semver"
   ],
   "skills": [

@@ -92,7 +92,7 @@ test("the footer of every page shows the plugin version and the icon credit", ()
     const html = source(page);
     assert.ok(html.includes(`MIT &middot; v${version} &middot; by `), `${page} footer version`);
     assert.ok(html.includes("James Keuning") && html.includes("CREDITS.md"), `${page} icon credit`);
-    assert.ok(html.includes("Evan Wallace"), `${page} esbuild credit`);
+    assert.ok(html.includes("Voice inspired by the release notes of <a"), `${page} voice credit line`);
   });
 });
 
@@ -128,9 +128,36 @@ function visible(fragment: string): string {
   return fragment.replace(/<[^>]*>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 }
 
-test("every esbuild quote on voice.html is a quote from skills/voice/references/patterns.md", () => {
-  const patterns = plain(read("skills/voice/references/patterns.md"));
-  const quotes = [...source("voice.html").matchAll(/<blockquote class="quote"><p>([\s\S]*?)<\/p><\/blockquote>/g)].map((m) => visible(m[1] ?? ""));
-  assert.ok(quotes.length >= 10, `found ${quotes.length} quotes`);
+// Collapses runs of white space. Turns "a\n   b" into "a b".
+const squash = (text: string): string => text.replace(/\s+/g, " ").trim();
+const MAX_ESBUILD_QUOTES = 2;
+
+test("voice.html quotes esbuild at most twice, each quote is in patterns.md, and every example is real", () => {
+  const html = source("voice.html");
+  const patterns = squash(plain(read("skills/voice/references/patterns.md")));
+  const quotes = [...html.matchAll(/<blockquote class="quote">([\s\S]*?)<\/blockquote>/g)].map((m) => squash(visible(m[1] ?? "")));
+  assert.ok(quotes.length >= 1 && quotes.length <= MAX_ESBUILD_QUOTES, `found ${quotes.length} esbuild quotes`);
   quotes.forEach((quote) => assert.ok(patterns.includes(quote), `not in patterns.md: ${quote}`));
+  const corpus = squash(plain([read("testdata/showcase/tpe-0.6.0.md"), ...files("testdata/rules").map(({ path }) => read(path))].join("\n\n")));
+  const examples = [...html.matchAll(/<blockquote class="example">([\s\S]*?)<\/blockquote>|<pre><code>([\s\S]*?)<\/code><\/pre>/g)].map((m) => squash(visible((m[1] ?? m[2] ?? "").replace(/<\/p>/g, "</p> "))));
+  assert.ok(examples.length >= 5, `found ${examples.length} examples`);
+  examples.filter((example) => !example.startsWith("{")).forEach((example) => assert.ok(corpus.includes(example), `not in a draft or a checker fixture: ${example.slice(0, 80)}`));
+  assert.equal([...html.matchAll(/esbuild/gi)].length > 0, true);
+  const outside = html.split("<h2>Where the voice comes from</h2>")[0] ?? "";
+  assert.ok(!/esbuild/i.test(outside.replace(/<code>esbuild<\/code>/g, "")), "esbuild appears before the section Where the voice comes from");
+});
+
+test("every page has one floating GitHub link with an inline mark", () => {
+  pages.forEach((page) => {
+    const html = source(page);
+    const links = [...html.matchAll(/<a class="gh-fab" href="https:\/\/github\.com\/gagoar\/foghorn" aria-label="View foghorn on GitHub"><svg [\s\S]*?<\/svg><\/a>/g)];
+    assert.equal(links.length, 1, `${page} floating GitHub link`);
+  });
+  const css = read("docs/assets/site.css");
+  assert.ok(css.includes(".gh-fab") && css.includes("safe-area-inset-bottom") && css.includes("print"));
+});
+
+test("no page shows a box row: no card, stat strip, tag or grid", () => {
+  pages.forEach((page) => assert.ok(!/class="(?:card|stats|grid2|tag)\b/.test(source(page)), `${page} has a box row`));
+  assert.ok(!/esbuild/i.test(source("index.html").replace(/<footer[\s\S]*<\/footer>/, "")), "index.html names esbuild outside the footer");
 });

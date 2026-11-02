@@ -15,7 +15,7 @@ Check a release-notes file against the voice. Report. Do not rewrite unless the 
 ## Steps
 
 1. Take the file path from the arguments. If there is none, ask for it.
-2. Run the checker. The default voice is `esbuild-plus`:
+2. Run the checker. The default voice is `foghorn`:
 
    ```bash
    node "${CLAUDE_PLUGIN_ROOT}/scripts/check-notes.ts" --json <file>

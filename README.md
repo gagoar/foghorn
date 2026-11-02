@@ -4,7 +4,7 @@
 
 **Release notes that the people affected want to read: technical, honest, and checked by code.**
 
-foghorn is a Claude Code plugin. It drafts release notes for a tag range in the voice of esbuild's releases. It has a checker that fails notes that skip the facts a reader needs.
+foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range: what changed for a user, the old and new output, who is affected and how to check, and credit for the people who helped. A checker fails notes that skip these facts.
 
 [Docs](https://gagoar.github.io/foghorn/): a real run, the voice, and the guide.
 
@@ -16,27 +16,28 @@ foghorn is a Claude Code plugin. It drafts release notes for a tag range in the 
 
 Before is one line from the release text of actions/checkout v7.0.1, made by `--generate-notes`. It says what a pull request was called. It does not say what changed for you.
 
-After is a real entry from esbuild v0.24.2, the voice that foghorn follows. The checker passes it with the `esbuild` voice (no hard failure):
+After is an entry from a foghorn draft for typescript-patterns-enforcer v0.6.0. The checker passes it with the `foghorn` voice (no hard failure):
 
-> * Fix regression with `--define` and `import.meta` ([#4010](https://github.com/evanw/esbuild/issues/4010), [#4012](https://github.com/evanw/esbuild/issues/4012), [#4013](https://github.com/evanw/esbuild/pull/4013))
+> * Stop the magic-number check from flagging numbers inside a named constant ([#35](https://github.com/gagoar/typescript-patterns-enforcer/pull/35))
 >
->     The previous change in version 0.24.1 to use a more expression-like parser for `define` values to allow quoted property names introduced a regression that removed the ability to use `--define:import.meta=...`. Even though `import` is normally a keyword that can't be used as an identifier, ES modules special-case the `import.meta` expression to behave like an identifier anyway. This change fixes the regression.
+>     Previously the check flagged every number in an arithmetic expression, even when the expression is the initial value of a `const` that names the result. The check also flagged a number inside an `as const` table, although the table is the named constant.
 >
->     This fix was contributed by [@sapphi-red](https://github.com/sapphi-red).
+>     With this release, the check skips a number in the arithmetic of a `const` initializer and a number inside an `as const` literal. This is a deliberate difference from typescript-eslint, which exempts only a bare initializer.
 
-These are two different changes. The table shows the shape of a note, not a rewrite of one change. foghorn does not rewrite old notes. A test checks that the After text is the text of `testdata/voice/esbuild-v0.24.2.md`.
+These are two different changes. The table shows the shape of a note, not a rewrite of one change. foghorn does not rewrite old notes. A test checks that the After text is the text of `testdata/showcase/tpe-0.6.0.md`, the full draft.
 
 ## Install
 
 ```
-/plugin marketplace add gagoar/foghorn
-/plugin install foghorn@foghorn
-```
-
-foghorn needs two other plugins for the prose step: `unmistakable` (the `asd-ste100` skill) and `iceberg` (`iceberg:edit`). Both come from the `gago-plugins` marketplace:
-
-```
 /plugin marketplace add gagoar/gago-plugins
+/plugin install foghorn@gago-plugins
+```
+
+A foghorn is a loud signal that tells people what is ahead. The plugin is named for what release notes do.
+
+foghorn needs two other plugins for the prose step: `unmistakable` (the `asd-ste100` skill) and `iceberg` (`iceberg:edit`). Both come from the same marketplace:
+
+```
 /plugin install unmistakable@gago-plugins
 /plugin install iceberg@gago-plugins
 ```
@@ -52,7 +53,7 @@ foghorn needs two other plugins for the prose step: `unmistakable` (the `asd-ste
 The checker runs without Claude too. Node 22.18 or later:
 
 ```
-node scripts/check-notes.ts --voice esbuild-plus RELEASE.md
+node scripts/check-notes.ts --voice foghorn RELEASE.md
 node scripts/check-notes.ts --json --disable padding,emoji < RELEASE.md
 ```
 
@@ -69,9 +70,9 @@ Three hard checks fail the run on their own. A fourth runs only when the caller 
 
 `--repo owner/name` limits the trace to links on that repository: a link to another repository counts for nothing.
 
-A voice can change a severity. The `esbuild` voice makes `entry-no-link-or-credit` a warning, because 8 of the last 30 esbuild releases break it themselves. `esbuild-plus` and `neutral` keep it hard.
+A voice can change a severity. The `esbuild` voice makes `entry-no-link-or-credit` a warning, because 8 of the 30 calibration releases break it. `foghorn` and `neutral` keep it hard.
 
-Nine checks warn: `unlabeled-code-block`, `marketing-word`, `entry-too-long` (prose and code together), `too-many-examples` (more than 4 code blocks in one entry), `wall-of-text` (a paragraph over 900 characters), `missing-version-or-date`, `affects-line-missing`, `padding`, `emoji`. The two limits come from the 30 latest esbuild releases: the most examples in one entry was 4, and the longest paragraph was 859 characters.
+Nine checks warn: `unlabeled-code-block`, `marketing-word`, `entry-too-long` (prose and code together), `too-many-examples` (more than 4 code blocks in one entry), `wall-of-text` (a paragraph over 900 characters), `missing-version-or-date`, `affects-line-missing`, `padding`, `emoji`. The two limits come from 30 calibration releases: the most examples in one entry was 4, and the longest paragraph was 859 characters.
 
 A hedge such as "in theory" is content. The checker never flags one.
 
@@ -79,11 +80,13 @@ A hedge such as "in theory" is content. The checker never flags one.
 
 | Preset | Person | Shape |
 |---|---|---|
-| `esbuild-plus` (default) | first | The esbuild shape, plus optional `Affects:` and `To check:` lines when a change can break someone. |
-| `esbuild` | first | The esbuild shape, as far as the ten hand-cut excerpts in `testdata/voice/` go. No `Affects:` line. Full releases still fail hard in places: see AGENTS.md. |
+| `foghorn` (default) | first | The house voice: name the change, old and new output, optional `Affects:` and `To check:` lines when a change can break someone. |
+| `esbuild` | first | The preset calibrated on esbuild's own release notes. No `Affects:` line. Full releases still fail hard in places: see AGENTS.md. |
 | `neutral` | third | The same shape, with the project as the subject. Credits as "Reported by @x. Fixed by @y." |
 
-A voice is a JSON file. See `foghorn.voice.example.json` and `schema/foghorn-voice.schema.json`. The ten patterns behind the presets are in `skills/voice/references/patterns.md`, each with a short quote and its source.
+Under `esbuild`, 2 of the 30 calibration releases (v0.22.0 to v0.28.2) fail a hard check. Under `foghorn`, 8 of 30 do. The gap is `entry-no-link-or-credit`.
+
+A voice is a JSON file. See `foghorn.voice.example.json` and `schema/foghorn-voice.schema.json`. The ten patterns behind the calibration preset are in `skills/voice/references/patterns.md`, each with a short quote and its source.
 
 ## How it differs from `--generate-notes`
 
@@ -116,4 +119,4 @@ MIT. See `LICENSE`.
 
 ## Credits
 
-The voice follows the release notes of [esbuild](https://github.com/evanw/esbuild/releases) by Evan Wallace. Short quotes carry their source. The icon credit is in [CREDITS.md](CREDITS.md). Other notices are in `THIRD_PARTY_NOTICES.md`.
+The foghorn voice was inspired by the release notes of [esbuild](https://github.com/evanw/esbuild/releases), written by Evan Wallace. foghorn is not affiliated with esbuild and esbuild has not endorsed it. Short quotes carry their source. The icon credit is in [CREDITS.md](CREDITS.md). Other notices are in `THIRD_PARTY_NOTICES.md`.

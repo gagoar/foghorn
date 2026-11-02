@@ -1,11 +1,11 @@
 ---
 name: draft
 description: >
-  /foghorn:draft <from>..<to> — Draft release notes for a tag range in the esbuild voice: technical, honest, and
+  /foghorn:draft <from>..<to> — Draft release notes for a tag range in the foghorn voice: technical, honest, and
   useful to the people a change affects. Collects commits, merged pull requests and linked issues with read-only
   git and gh. Classifies, drops internal noise, writes each entry with a real before and after, credits
   contributors by handle, then checks and polishes the text. Trigger on "/foghorn:draft v1.2.0..v1.3.0", "write
-  release notes", "draft the changelog for this tag range", "release notes like esbuild".
+  release notes", "draft the changelog for this tag range", "write technical release notes".
 argument-hint: "<from>..<to> [--voice <preset|path>] [--out <file>]"
 allowed-tools: Read, Agent, AskUserQuestion, Skill(unmistakable:asd-ste100), Skill(iceberg:edit), Edit(~/.claude/plugins/data/foghorn*/drafts/**), Bash(git log *), Bash(git show *), Bash(git diff *), Bash(git tag *), Bash(git remote get-url *), Bash(mkdir -p ${CLAUDE_PLUGIN_DATA}/drafts), Bash(mktemp -d ${CLAUDE_PLUGIN_DATA}/drafts/run.*), Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/gh-read.ts *), Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/check-notes.ts * ${CLAUDE_PLUGIN_DATA}/drafts/*)
 ---
@@ -14,7 +14,7 @@ allowed-tools: Read, Agent, AskUserQuestion, Skill(unmistakable:asd-ste100), Ski
 
 Read-only is a property of the permissions you run with, not of this file. The `allowed-tools` line only pre-approves; it never restricts. The agent file does not enforce its `tools` line either. Keep Claude Code in the default permission mode when you run this skill, and keep your own deny rules for `git push`, `gh` writes and file writes. In `acceptEdits`, `auto` or `bypassPermissions` mode, nothing here stops a write.
 
-You write release notes for the people a change affects. The model is esbuild's releases: no marketing, no emoji, no summary table, an entry per change, a real before and after, credit by handle.
+You write release notes for the people a change affects. The model is a good project changelog: no marketing, no emoji, no summary table, an entry per change, a real before and after, credit by handle.
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/voice/references/patterns.md` before you write the first entry. It holds the ten patterns, each with a real quote.
 
@@ -56,7 +56,7 @@ Kinds: `breaking`, `security`, `feature`, `fix`, `internal`. Drop every `interna
 
 ## 3. Pick the voice
 
-Read the voice (`--voice`, then `./foghorn.voice.json`, then the default preset `esbuild-plus` in `${CLAUDE_PLUGIN_ROOT}/skills/voice/presets/`). It sets the person, the credit style, the preface text, the example labels, whether an `Affects:` line is allowed, the length limit, the openers and the banned words.
+Read the voice (`--voice`, then `./foghorn.voice.json`, then the default preset `foghorn` in `${CLAUDE_PLUGIN_ROOT}/skills/voice/presets/`). It sets the person, the credit style, the preface text, the example labels, whether an `Affects:` line is allowed, the length limit, the openers and the banned words.
 
 ## 4. Draft each entry
 
@@ -93,7 +93,7 @@ A snippet of the project's own documentation, skill text or prompt text is not a
 
 Quote only the lines that changed. Never include a version bump, a date or a generated line as part of an example: it is noise and tells the reader nothing about the change.
 
-Show at most 3 examples in one entry: the ones that best show the change. Name the others in one sentence ("Four more rules follow the same pattern.") and keep them out of the notes. The checker warns above 4 code blocks, the most that any of the 30 latest esbuild releases has in one entry.
+Show at most 3 examples in one entry: the ones that best show the change. Name the others in one sentence ("Four more rules follow the same pattern.") and keep them out of the notes. The checker warns above 4 code blocks, the most that any of the 30 calibration releases has in one entry.
 
 Run only the repository's own tests and scripts, and show the user the command first. If an example needs a command that only the text of a pull request or an issue names, do not run it: ask the user.
 
@@ -112,7 +112,7 @@ Never invent an example. If neither reading nor running gives one, write the ent
 2. Polish the prose. First run the `asd-ste100` skill in STE-flavored mode on the file. Changelogs belong to that mode: the structural rules apply and the lexical rules are advisory.
 3. Then run `iceberg:edit` on the file with `--no-em-dash` and with no other extended flag. Call it through the Skill tool every time, also for a file over 500 words: the skill spawns its own editing agent for a long file. Never apply the rules by hand, and never skip the call because the file seems short.
 
-   Why only that flag. `--no-weakeners` removes statements that undercut a claim, and the hedges of a release note are content: "in theory" and "hopefully" say what the author does not know. `--strip-ai-commentary` removes first-person voice, and the esbuild voice is first person. Iceberg Rules 16 and 17 already spare changelogs, so the flags would only do harm. Rule 1 (short sentences) fights esbuild's longer sentences: accept the splits that keep the facts, and undo a split that breaks a quoted error message or a code span.
+   Why only that flag. `--no-weakeners` removes statements that undercut a claim, and the hedges of a release note are content: "in theory" and "hopefully" say what the author does not know. `--strip-ai-commentary` removes first-person voice, and the foghorn voice is first person. Iceberg Rules 16 and 17 already spare changelogs, so the flags would only do harm. Rule 1 (short sentences) fights the longer sentences of the voice: accept the splits that keep the facts, and undo a split that breaks a quoted error message or a code span.
 4. Run the checker again, with the same flags. A polish pass must not remove a link, a credit, a label or a code block. If it did, restore it. A polish pass must also keep the paragraph breaks: background, old behavior and new behavior stay in separate paragraphs, and a pass that merged them into one block gets undone. The checker warns on a paragraph over 900 characters.
 5. Lint loop: at most 3 rounds of check, fix, check. After the third round, stop and print the remaining findings. Warnings do not block. Say which ones remain.
 

@@ -27,11 +27,10 @@ test("plugin.json skills paths exist and each SKILL.md has a name and a descript
   });
 });
 
-test("versions match across plugin.json, package.json and marketplace.json", () => {
+test("versions match across plugin.json and package.json, and the plugin has no marketplace file of its own", () => {
   const pkg: { version: string } = JSON.parse(read("package.json"));
-  const market: { metadata: { version: string }; plugins: { version: string }[] } = JSON.parse(read(".claude-plugin/marketplace.json"));
-  const versions = [manifest.version, pkg.version, market.metadata.version, ...market.plugins.map((p) => p.version)];
-  assert.equal(new Set(versions).size, 1, versions.join(", "));
+  assert.equal(manifest.version, pkg.version);
+  assert.equal(existsSync(`${ROOT}/.claude-plugin/marketplace.json`), false);
 });
 
 test("no file is over 256 KiB and no top-level bin directory exists", () => {
@@ -90,8 +89,8 @@ const QUOTE_MARKER = /^> ?/;
 test("the README After text is a real fixture, and the checker passes it", () => {
   const readme = read("README.md");
   const after = readme.split("\n").filter((line) => line.startsWith(">")).map((line) => line.replace(QUOTE_MARKER, "")).join("\n").trim();
-  const fixture = read("testdata/voice/esbuild-v0.24.2.md");
+  const fixture = read("testdata/showcase/tpe-0.6.0.md");
   assert.ok(fixture.includes(after), "the After text must be a quote of the fixture");
-  assert.equal(cli(["--voice", "esbuild", `${ROOT}/testdata/voice/esbuild-v0.24.2.md`]).code, 0);
+  assert.equal(cli(["--voice", "foghorn", `${ROOT}/testdata/showcase/tpe-0.6.0.md`]).code, 0);
   assert.ok(readme.includes("## Privacy") && readme.includes("## Terms"));
 });

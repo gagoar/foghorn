@@ -61,10 +61,9 @@
 
 **Full Changelog**: https://github.com/gagoar/typescript-patterns-enforcer/compare/v0.5.10...v0.5.11</code></pre><p class="src">Source: the v0.5.11 release of <a href="https://github.com/gagoar/typescript-patterns-enforcer/releases/tag/v0.5.11">gagoar/typescript-patterns-enforcer</a>.</p>
 </section>
-<hr class="waves" aria-hidden="true">
 <section id="the-foghorn-draft-for-v0-6-0">
 <h2>The foghorn draft for v0.6.0</h2>
-<p>This is the text of the final draft file. We did not change a word of it. The voice is <code>esbuild-plus</code>.</p>
+<p>This is the text of the final draft file. We did not change a word of it. The voice is <code>foghorn</code>.</p>
 <div class="notes"><ul><li><p><strong>Check TypeScript files written through a shell with an advisory Stop hook (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/33">#33</a>)</strong></p>
 <p>The mechanical checks ran from a <code>PostToolUse</code> hook, and that hook only sees files that the Edit and Write tools wrote. A <code>.ts</code> file written by a shell heredoc or a script never reached the checks.</p>
 <p>With this release, the plugin also registers a <code>Stop</code> hook. When a session ends, it walks the working directory for <code>.ts</code> and <code>.tsx</code> files modified since the session began and runs the same checks on them. It skips <code>node_modules</code>, <code>.git</code>, <code>dist</code>, <code>build</code>, <code>out</code>, <code>coverage</code>, <code>.next</code>, <code>.turbo</code> and <code>.d.ts</code> files. It is advisory: it reports through <code>systemMessage</code> and always exits 0, so it cannot trap a session.</p>
@@ -101,14 +100,12 @@ src/list.ts:
 <p>The <code>check</code> skill and the <code>review</code> agent gain the rules that the audit found. No mechanical check covers them. They are: hand-written library shapes, illegal states, fail-open defaults, cast laundering, repeated literals, string boundaries and small items. The review agent has new checklist items 18 to 24.</p>
 <p>Each finding now carries the label <code>correctness</code> or <code>style</code>. A change is done when no <code>correctness</code> finding remains. The skill's review checklist now asks you to print each item marked <code>checked</code> or <code>n/a</code>. It also covers files written through a shell.</p></li></ul></div>
 </section>
-<hr class="waves" aria-hidden="true">
 <section id="what-foghorn-left-out">
 <h2>What foghorn left out</h2>
 <p>The range held more changes than the draft shows. foghorn dropped these as internal:</p>
 <ul><li>the docs redesign</li><li>the icon</li><li>the badge</li><li>the CI gates</li><li>the version bump</li></ul>
 <p>The rule is fixed. A change that only touches the documentation site, the README, badges, artwork, a CI gate, a consistency gate or the version number is internal. foghorn counts the dropped entries and tells you. You can correct a classification before it writes.</p>
 </section>
-<hr class="waves" aria-hidden="true">
 <section id="what-to-look-for">
 <h2>What to look for</h2>
 <p>Each entry names the thing and the change, and links its pull request. Each entry that changed behavior shows what the user sees. The second entry carries an <code>Affects:</code> line and a <code>To check:</code> line, because the change can break someone.</p>
@@ -117,8 +114,9 @@ src/list.ts:
 </main>
 <footer class="foot"><p>MIT &middot; v0.1.0 &middot; by <a href="https://github.com/gagoar">gagoar</a></p>
 <p>Icon: "Buoy" by James Keuning, from <a href="https://thenounproject.com/icon/buoy-7876/">Noun Project</a>. The icon is marked Public Domain. We credit it anyway. We recolored it and placed it on a new background. <a href="https://github.com/gagoar/foghorn/blob/main/CREDITS.md">Credits</a></p>
-<p>The voice follows the release notes of <a href="https://github.com/evanw/esbuild/releases">esbuild</a> by Evan Wallace. foghorn is not affiliated with esbuild and esbuild has not endorsed it.</p>
+<p>Voice inspired by the release notes of <a href="https://github.com/evanw/esbuild/releases">esbuild</a>.</p>
 <p><a href="https://github.com/gagoar/foghorn">GitHub</a> &middot; <a href="https://github.com/gagoar/foghorn/issues">Issues</a> &middot; <a href="https://github.com/gagoar/foghorn/blob/main/README.md">README</a></p></footer>
 </div>
+<a class="gh-fab" href="https://github.com/gagoar/foghorn" aria-label="View foghorn on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
 </body>
 </html>

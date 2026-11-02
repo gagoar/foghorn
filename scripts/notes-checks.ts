@@ -79,7 +79,7 @@ export const REPO_NAME = /^[\w.-]+\/[\w.-]+$/;
 const NONE = 0;
 const TITLE_CHARS = 60;
 const FIRST_LINE = 1;
-// Limits taken from 138 entries of the 30 latest esbuild releases: the most examples in one entry was 4,
+// Limits taken from 138 entries of the 30 latest calibration releases: the most examples in one entry was 4,
 // and the longest paragraph was 859 characters. A warning fires above both.
 const MAX_EXAMPLES = 4;
 const MAX_PARAGRAPH_CHARS = 900;
@@ -233,7 +233,7 @@ function padding(notes: Notes): readonly Found[] {
 function emoji(notes: Notes): readonly Found[] {
   return proseRows(notes)
     .filter((row) => EMOJI.test(row.text))
-    .map((row) => ({ line: row.no, message: "An emoji. The esbuild voice uses none." }));
+    .map((row) => ({ line: row.no, message: "An emoji. The foghorn voice uses none." }));
 }
 
 export const CHECKS: readonly Check[] = [

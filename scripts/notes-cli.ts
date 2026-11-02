@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { AT_SIGN, CHECK_IDS as KNOWN_CHECKS, REPO_NAME, runChecks } from "./notes-checks.ts";
 import { parse } from "./notes-parse.ts";
 import { failed, summarize, toJSON, toText, type FileReport } from "./notes-report.ts";
-import { DEFAULT_PRESET, loadVoice } from "./notes-voice.ts";
+import { DEFAULT_PRESET, loadVoice, renamedTo } from "./notes-voice.ts";
 
 const EXIT_OK = 0;
 const EXIT_FAILED = 1;
@@ -16,7 +16,7 @@ const USAGE = `usage: check-notes [--json] [--voice <preset|path>] [--disable a,
 Reads FILE arguments, or stdin when there are none. Exit 0 when no hard check fails,
 1 when one does, 2 for a usage error.
 
---voice picks a preset (esbuild, esbuild-plus, neutral) or the path of a voice file. Default: ${DEFAULT_PRESET}.
+--voice picks a preset (foghorn, esbuild, neutral) or the path of a voice file. Default: ${DEFAULT_PRESET}.
 --repo owner/name limits the trace of an entry to that repository.
 --handles a,b lists the people the API named (authors and reporters). A credit to anyone else fails credit-unverified.
 --disable silences checks by id. The ids: ${KNOWN_CHECKS.join(", ")}.`;
@@ -105,6 +105,8 @@ export function run(argv: readonly string[], io: Io = SYSTEM_IO): number {
       io.out(USAGE);
       return EXIT_OK;
     }
+    const renamed = renamedTo(options.voice);
+    if (renamed) io.err(`check-notes: the voice ${options.voice} is renamed to ${renamed}. The old name still works.`);
     const voice = loadVoice(options.voice);
     const sources: readonly (readonly [string, string])[] = options.paths.length
       ? options.paths.map((path) => [path, readFileSync(path, "utf8")] as const)
