@@ -53,54 +53,53 @@
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
 <nav class="top" aria-label="Main"><a class="brand" href="index.html"><img src="assets/icon.svg" alt="" width="32" height="32">foghorn</a><a class="link" aria-current="page" href="index.html">Home</a><a class="link" href="showcase.html">Showcase</a><a class="link" href="voice.html">Voice</a><a class="link" href="guide.html">Guide</a><a class="link" href="https://github.com/gagoar/foghorn">GitHub</a></nav>
-<header class="hero"><div><p class="eyebrow">Claude Code plugin</p><h1>Release notes worth reading.</h1><p class="lead">foghorn is a release notes generator for Claude Code. It drafts technical release notes for a tag range. Each note says what changed for a user, shows the old and new output, says who is affected, and says how to check.</p><p class="note-name">A foghorn is a loud signal that tells people what is ahead. The plugin is named for what release notes do.</p><p class="angle">Machines read release notes now, as well as people. A person still has to follow a note when an upgrade breaks something. foghorn writes the note so that both can.</p><pre><code>/plugin marketplace add gagoar/gago-plugins
+<header class="hero"><div><p class="eyebrow">Claude Code plugin</p><h1>Release notes worth reading.</h1><p class="lead">We built foghorn to draft technical release notes for a tag range.</p><p class="angle">Agents read release notes now too. You still have to follow one when an upgrade breaks something. We write each note so that you and an agent can both follow it.</p><pre><code>/plugin marketplace add gagoar/gago-plugins
 /plugin install foghorn@gago-plugins</code></pre><div class="actions"><a class="btn primary" href="#install-and-use">More install steps</a><a class="btn secondary" href="showcase.html">See a real run</a></div></div><img class="mark" src="assets/icon.svg" alt="foghorn icon: a red-orange bell buoy on dark blue water" width="168" height="168"></header>
 <hr class="waves" aria-hidden="true">
 <main id="main">
 <section id="before-and-after">
-<h2>Before and after</h2>
-<p>GitHub's <code>--generate-notes</code> writes one line for each pull request, taken from its title. These are the lines for three pull requests of the v0.6.0 range of typescript-patterns-enforcer. We rebuilt them from the titles. The format is the one in the v0.5.11 release.</p>
+<h2>Same change, two notes</h2>
+<p>GitHub's <code>--generate-notes</code> writes one line for each pull request, from its title. These are the lines for three pull requests of the v0.6.0 range of typescript-patterns-enforcer. We rebuilt them from the titles.</p>
 <h3>What GitHub writes</h3>
 <pre><code>* Check shell-written TypeScript files with an advisory Stop hook by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/33
 * Add six syntactic checks from the audit and relax magic numbers in named constants by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/35
 * Fold the audit findings into the skill and review agent (v0.5.15) by @gagoar in https://github.com/gagoar/typescript-patterns-enforcer/pull/32</code></pre>
-<p>The lines name pull requests. They do not say what changed for you.</p>
 <h3>A foghorn entry for the first of them</h3>
-<div class="notes"><ul><li><p><strong>Check TypeScript files written through a shell with an advisory Stop hook (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/33">#33</a>)</strong></p>
-<p>The mechanical checks ran from a <code>PostToolUse</code> hook, and that hook only sees files that the Edit and Write tools wrote. A <code>.ts</code> file written by a shell heredoc or a script never reached the checks.</p>
-<p>With this release, the plugin also registers a <code>Stop</code> hook. When a session ends, it walks the working directory for <code>.ts</code> and <code>.tsx</code> files modified since the session began and runs the same checks on them. It skips <code>node_modules</code>, <code>.git</code>, <code>dist</code>, <code>build</code>, <code>out</code>, <code>coverage</code>, <code>.next</code>, <code>.turbo</code> and <code>.d.ts</code> files. It is advisory: it reports through <code>systemMessage</code> and always exits 0, so it cannot trap a session.</p>
-<p>New output (a <code>.ts</code> file written through a shell, then the session stops):</p>
-<pre><code>ts-patterns: mechanical violations in TypeScript files changed this session (the edit hook does not see files written through a shell):
+<p>It says what changed for you, and it shows the output.</p>
+<div class="notes"><ul><li><p><strong>Check TypeScript files written through a shell with an advisory Stop hook (<a href="https://github.com/gagoar/typescript-patterns-enforcer/pull/33">#33</a>)</strong></p><p>The mechanical checks ran from a <code>PostToolUse</code> hook, and that hook only sees files that the Edit and Write tools wrote. A <code>.ts</code> file written by a shell heredoc or a script never reached the checks.</p><p>[...] It is advisory: it reports through <code>systemMessage</code> and always exits 0, so it cannot trap a session.</p><p>New output (a <code>.ts</code> file written through a shell, then the session stops):</p><pre><code>ts-patterns: mechanical violations in TypeScript files changed this session (the edit hook does not see files written through a shell):
 src/list.ts:
   L1:64  no-zero-comparison  `.length` compared with zero: coerce it (`!!x.length`, `!x.length`) (see SKILL.md Core Rule 10).</code></pre></li></ul></div>
-<p>This entry says what the code did and what it does now. It shows the output. <a href="showcase.html">The full run is on the showcase page.</a></p>
+<p><a href="showcase.html">The full run is on the showcase page.</a></p>
 </section>
-<section id="what-a-good-release-note-does">
-<h2>What a good release note does</h2>
-<p>A good release note says what changed for a user. A pull request title says what a developer did. A reader wants the other fact: what is different after I upgrade.</p>
-<p>It shows the old output and the new output. "Improved error handling" sends the reader to the diff. Two blocks of output take five seconds to read. If the author cannot show the output, the note says so.</p>
-<p>It says who is affected and how to check. Most changes touch nobody. A few break someone. For those, one line names the people and one line gives a command that tells them if they are one of them.</p>
-<p>It credits the people who are not the maintainer. The person who reported the bug and the person who fixed it get their handles. And it admits what the author does not know. If a check matches only a narrow shape, the note says so. A hedge that marks a real doubt is content, not filler.</p>
+<hr class="waves" aria-hidden="true">
+<section id="what-a-good-note-does">
+<h2>What a good note does</h2>
+<ul><li><strong>It says what changed for you.</strong> A pull request title says what a developer did.</li><li><strong>It shows the old output and the new output.</strong> Two blocks take five seconds to read.</li><li><strong>It says who is affected and how to check.</strong> One line names them. One line gives a command.</li><li><strong>It credits the people who helped, and admits what we do not know.</strong> A hedge that marks a real doubt is content, not filler.</li></ul>
 </section>
+<hr class="waves" aria-hidden="true">
 <section id="how-it-works">
 <h2>How it works</h2>
-<p><code>/foghorn:draft v1.2.0..v1.3.0</code> runs these steps:</p>
-<ol><li>It reads git history, merged pull requests and linked issues. It uses read-only commands.</li><li>It drops internal changes, such as docs-site work, CI and version bumps. It tells you how many.</li><li>It sorts each change as breaking, security, feature or fix. It shows you the table, and you can change it.</li><li>It writes each entry in the voice. A change of behavior gets a real before and after, read from the diff or run from the code. It never invents an example.</li><li>It checks the draft with code, and it polishes the prose. A breaking release with no preface fails. So does a behavior change with no old and new output. So does an entry with no link and no credit.</li><li>It prints the draft. You read it and you publish it. foghorn never publishes.</li></ol>
+<ol><li>You run <code>/foghorn:draft v1.2.0..v1.3.0</code>. foghorn reads git history, merged pull requests and linked issues, with read-only commands.</li><li>It drops internal changes, sorts the rest as breaking, security, feature or fix, and shows you the table. You can change it.</li><li>It writes each entry in the voice. For a change of behavior it reads the diff or runs the code, so the before and after are real. It never invents an example.</li><li>Code checks the draft, and a prose pass polishes it. A breaking release with no preface fails. So does a behavior change with no old and new output.</li><li>You read the draft and you publish it. foghorn never publishes.</li></ol>
 </section>
 <section id="what-it-touches">
 <h2>What it touches</h2>
-<ul><li>It reads git history and GitHub with read-only commands.</li><li>The one script that starts a process is <code>scripts/gh-read.ts</code>. It allows a fixed list of read-only <code>gh</code> commands. It gives <code>gh</code> only a short list of environment variables, and it never prints the credential.</li><li>foghorn never publishes a release. You read the draft and you publish it.</li><li>MIT license. No account and no telemetry in the scripts.</li></ul>
+<ul><li>It reads git history and GitHub with read-only commands.</li><li>One script starts a process: <code>scripts/gh-read.ts</code>. It allows a fixed list of read-only <code>gh</code> commands. It gives <code>gh</code> only a short list of environment variables, and it never prints the credential.</li><li>MIT license. No account and no telemetry in the scripts.</li></ul>
 </section>
+<hr class="waves" aria-hidden="true">
 <section id="install-and-use">
-<h2>Install and use</h2>
-<p>foghorn needs two other plugins for the prose step: unmistakable, which holds the <code>asd-ste100</code> skill, and iceberg, which holds <code>iceberg:edit</code>. Both come from the same marketplace.</p>
+<h2>Install</h2>
+<p>foghorn needs two helper plugins for the prose step. They come from the same marketplace.</p>
 <pre><code>/plugin install unmistakable@gago-plugins
 /plugin install iceberg@gago-plugins</code></pre>
 <ul><li><code>/foghorn:draft v1.2.0..v1.3.0</code> collects the changes of the range, drafts the notes, checks them and polishes them.</li><li><code>/foghorn:check RELEASE.md</code> runs the checker on a file and explains each finding. It changes nothing.</li><li><code>/foghorn:voice</code> shows, picks or edits the voice.</li></ul>
 </section>
 <section id="limits">
 <h2>Limits</h2>
-<p>foghorn needs a model. It takes minutes. A model can misread a diff, so a person must read every draft. The checker looks for an example. It cannot prove that the example is true. <code>gh release create --generate-notes</code> is instant and free. If your pull request titles are good and your readers need only a list, use it. foghorn is better than generate-notes only when your readers need more than a list.</p>
+<p>foghorn needs a model, and a draft takes minutes. A model can misread a diff, so you must read every draft. The checker looks for an example. It cannot prove that the example is true.</p><p>If your pull request titles are good and your readers need only a list, use <code>gh release create --generate-notes</code>. It is instant and free.</p>
+</section>
+<section id="about-the-name">
+<h2>About the name</h2>
+<p>A foghorn is a loud signal that tells people what is ahead. We named the plugin for what release notes do.</p>
 </section>
 </main>
 <footer class="foot"><p>MIT &middot; v0.1.0 &middot; by <a href="https://github.com/gagoar">gagoar</a></p>
